@@ -2,7 +2,11 @@
 # Date: 2023-08-18
 # Author: Jeremy Pedersen
 #
-import boto3, random
+# Create multiple DeepRacer IAM users, for use with 
+# DeepRacer's multi-user feature, documented here:
+# https://docs.aws.amazon.com/deepracer/latest/developerguide/multi-user-mode.html
+#
+import boto3, time
 
 sts = boto3.client('sts')
 iam = boto3.client('iam')
@@ -47,8 +51,21 @@ policy_arns = [
     'arn:aws:iam::aws:policy/IAMUserChangePassword'
 ]
 
+try:
+    # Create the group
+    response = iam.create_group(GroupName=group_name)
+    if response and 'Group' in response:
+        print(f'Group {group_name} created successfully.')
+except:
+    print(f'Unable to create group {group_name}, skipping and hoping it is already there!')
+
+# Wait before attaching policies
+print('Waiting a few seconds before adding policies...')
+time.sleep(5)   
+
 for policy_arn in policy_arns:
     try:
+        # Attach the policy to the group
         iam.attach_group_policy(
             GroupName=group_name,
             PolicyArn=policy_arn
@@ -57,30 +74,9 @@ for policy_arn in policy_arns:
     except:
         print(f'Unable to attach policy {policy_arn} to group {group_name}, continuing on...')
 
-try:
-    # Create the group
-    response = iam.create_group(GroupName=group_name)
-    if response and 'Group' in response:
-        print(f'Group {group_name} created successfully.')
-
-    # Attach the policy to the group
-    iam.attach_group_policy(
-        GroupName=group_name,
-        PolicyArn=policy_arn
-    )
-    print(f'Policy {policy_arn} attached to group {group_name} successfully.')
-except:
-    print(f'Unable to create group {group_name}, skipping and hoping it is already there!')
-
-# Usernames are padded with zeros, the code below works out
-# how much padding is needed, based on the number of users being
-# created
-padding = len(str(num_users))
-
 # Create users
 for i in range(1, num_users+1):
-    user_num = str(i).rjust(padding).replace(' ', '0') # Pad each username with zeroes
-    username = f'{user_prefix}_{user_num}'
+    username = f'{user_prefix}_{i}'
     password = f'{username}_123$' # Assign a predictable password (user will change on first login)
     print('=' * 30) # Print a separator
     print(f'Creating user {username}')

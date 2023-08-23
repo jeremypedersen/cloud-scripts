@@ -2,7 +2,15 @@
 # Date: 2023-08-18
 # Author: Jeremy Pedersen
 #
-import boto3
+# Delete the DeepRacer IAM users created by
+# the dr-delete-users.py script
+#
+# NOTE: This script will delete ALL IAM users whose 
+# username starts with "deepracer" so BE CAREFUL
+#
+# NOTE: It also deletes the 'DeepRacerUsers' group
+#
+import boto3, time
 
 # Initialize the IAM client
 iam = boto3.client('iam')
@@ -28,14 +36,12 @@ def delete_user_login_profile(username):
         print('Continuing on...')
 
 def delete_user(username):
-    iam.delete_user(UserName=username)
     try:
         iam.delete_user(UserName=username)
         print(f'Deleted user: {username}')
     except:
         print(f'Was not able to delete user {username}')
         print('Continuing on...')
-
 
 def remove_user_from_group(username, group_name):
     try:
@@ -62,10 +68,10 @@ except:
 # For each user, delete the user's login profile and then delete the user
 for username in deepracer_users:
     remove_user_from_group(username, group_name)
-    delete_user_login_profile(username)
+    delete_user_login_profile(username)    
     delete_user(username)
 
-# Delete the "DeepRacerUsers" group
+# Detach policies from group
 for policy_arn in policy_arns:
     try:
         iam.detach_group_policy(
@@ -76,9 +82,14 @@ for policy_arn in policy_arns:
     except:
         print(f'Unable to remove policy {policy_arn} from group {group_name}, continuing on...')
 
+# Wait for policies to detach
+print('Waiting for policies to detach...')
+time.sleep(5)
+
+# Delete group
 try:
     iam.delete_group(GroupName=group_name)
     print(f'Deleted group: {group_name}')
 except:
-    print(f'Unable to delete the group {group_name}, you may need to delete it by hand.')
+    print(f'Unable to delete the group {group_name}, you may need to delete it by hand (or it may already be deleted).')
 

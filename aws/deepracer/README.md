@@ -6,13 +6,12 @@ Scripts to help setup and manage [AWS DeepRacer](https://docs.aws.amazon.com/dee
 
 This script creates a set of DeepRacer users. It takes a number as input.
 
-If the user inputs `10`, the script will create new IAM users called `deepracer_01` through `deepracer_10`. If the user inputs `100`, the users will be `deepracer_001` through `deepracer_100`. 
+If the user inputs `10`, the script will create new IAM users called `deepracer_1` through `deepracer_10`. If the user inputs `100`, the users will be `deepracer_1` through `deepracer_100`. 
 
 The script also creates an IAM user group called `DeepRacerUsers` and attaches two IAM policies:
 
 ```
 arn:aws:iam::aws:policy/AWSDeepRacerDefaultMultiUserAccess
-
 arn:aws:iam::aws:policy/IAMUserChangePassword
 ```
 
@@ -30,3 +29,4 @@ Note that the script will fail to remove the user group if any additional IAM po
 
 **Warning:** This script deletes any IAM user prefixed with `deepracer`. **Not just users created by `dr-create-users.py`.**
 
+This script can also be safely re-run.
