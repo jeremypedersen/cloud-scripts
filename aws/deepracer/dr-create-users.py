@@ -1,6 +1,6 @@
 # 
-# Date: 2023-08-18
 # Author: Jeremy Pedersen
+# Updated: 2023-08-23
 #
 # Create multiple DeepRacer IAM users, for use with 
 # DeepRacer's multi-user feature, documented here:
@@ -44,8 +44,8 @@ except:
     print('Continuing anyway, but you a will need to determine the IAM user login URL by yourself')
     login_url = 'UNKNOWN'
 
-# Create IAM User Group "DeepRacerUsers", and attach policies 
-# to grant DeepRacer service access and IAM "change password" permissions
+# Create IAM User Group 'DeepRacerUsers', and attach policies 
+# to grant DeepRacer service access and IAM 'change password' permissions
 policy_arns = [
     'arn:aws:iam::aws:policy/AWSDeepRacerDefaultMultiUserAccess',
     'arn:aws:iam::aws:policy/IAMUserChangePassword'
@@ -93,7 +93,7 @@ for i in range(1, num_users+1):
         iam.create_login_profile(
             UserName=username, Password=password, PasswordResetRequired=True)
     except:
-        print(f"Could not create login profile for {username}")
+        print(f'Could not create login profile for {username}')
         print(f'Continuing anyway...')
 
     # Grant DeepRacer permissions (assigned to group)
@@ -112,4 +112,5 @@ for i in range(1, num_users+1):
 f.close()
 
 print('=' * 30) # Print a separator
-print('All done!')
+
+print('Done!')

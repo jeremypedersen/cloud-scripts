@@ -1,12 +1,12 @@
 # 
-# Date: 2023-08-18
 # Author: Jeremy Pedersen
+# Updated: 2023-08-23
 #
 # Delete the DeepRacer IAM users created by
 # the dr-delete-users.py script
 #
 # NOTE: This script will delete ALL IAM users whose 
-# username starts with "deepracer" so BE CAREFUL
+# username starts with 'deepracer' so BE CAREFUL
 #
 # NOTE: It also deletes the 'DeepRacerUsers' group
 #
@@ -58,7 +58,7 @@ try:
     # Fetch list of all IAM users
     users = iam.list_users()['Users']
 
-    # Filter list for users starting with "DeepRacer"
+    # Filter list for users starting with 'DeepRacer'
     deepracer_users = [user['UserName'] for user in users if user['UserName'].startswith(user_prefix)]
 except:
     print('Unable to fetch user list')
@@ -93,3 +93,4 @@ try:
 except:
     print(f'Unable to delete the group {group_name}, you may need to delete it by hand (or it may already be deleted).')
 
+print('Done!')
