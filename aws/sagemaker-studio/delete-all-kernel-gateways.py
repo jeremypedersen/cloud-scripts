@@ -1,6 +1,6 @@
 #
-# Author: Jeremy Pedersen
-# Date: 2023-08-18
+# Author: Jeremy Pedersen (and ChatGPT)
+# Updated: 2023-08-24
 # Purpose: delete all KernelGateways in a given region (cleanup)
 #
 import boto3
@@ -42,7 +42,7 @@ def delete_all_kernelgateways(region_name):
                         AppName=app_name
                     )
                 except Exception as e:
-                    print(f"Error deleting KernelGateway {app_name}: {e}")
+                    print(f'Error deleting KernelGateway {app_name}: {e}')
 
 # Ask the user to input a region
 region = input('Enter an AWS region name (such as us-east-1): ').strip()
