@@ -1,3 +1,10 @@
+#
+# Author: Jeremy Pedersen (and ChatGPT)
+# Updated: 2023-08-24
+#
+# Generate signed URLs for all objects in a bucket, with
+# a 12 hour expiration time
+#
 import boto3
 
 def generate_signed_urls(region, bucket_name, csvfile):
@@ -25,18 +32,18 @@ def generate_signed_urls(region, bucket_name, csvfile):
 
             #print(url)
     else:
-        print(f"No objects found in the bucket {bucket_name}.")
+        print(f'No objects found in the bucket {bucket_name}.')
 
 
 # Request user input
-region = input("Enter the AWS region: ")
-bucket_name = input("Enter the S3 bucket name: ")
+region = input('Enter the AWS region: ')
+bucket_name = input('Enter the S3 bucket name: ')
 
 # Open a .csv file called 'urls'
 csvfile = open('urls.csv', 'w')
 csvfile.write('Object Name, URL\n')
 
 # Generate signed URLs
+print('Generating')
 generate_signed_urls(region, bucket_name, csvfile)
-
 print('Done!')
