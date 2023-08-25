@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-19
+# Updated: 2023-08-24
 #
 # Creates a signed URL for a single Jupyter Notebook instance
 import boto3
@@ -20,8 +20,8 @@ def create_presigned_url(region, instance_name):
         print(f'Unable to generate URL for {instance_name}')
 
 # Get input from the user
-region = input("Enter the AWS region: ").strip()
-instance_name = input("Enter the SageMaker notebook instance name: ").strip()
+region = input('Enter the AWS region: ').strip()
+instance_name = input('Enter the SageMaker notebook instance name: ').strip()
 
 create_presigned_url(region, instance_name)
 

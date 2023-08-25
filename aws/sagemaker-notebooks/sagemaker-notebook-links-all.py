@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-19
+# Updated: 2023-08-24
 #
 # Generates signed URLs for all SageMaker Notebooks in a region
 import boto3
@@ -15,7 +15,7 @@ sagemaker = boto3.client('sagemaker', region_name=region)
 # Open a new CSV file for writing
 file = open('sagemaker_urls.csv', 'w', newline='')
 writer = csv.writer(file)
-writer.writerow(["name", "URL"])
+writer.writerow(['name', 'URL'])
 
 # Initialize the NextToken value
 next_token = None

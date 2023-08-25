@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-19
+# Updated: 2023-08-24
 #
 # Stops a single, named SageMaker Notebook in a given region
 import boto3
@@ -17,8 +17,8 @@ def stop_sagemaker_notebook(region, instance_name):
         print(f'Unable to stop instance {instance_name}')
 
 # Get input from the user
-region = input("Enter the AWS region: ").strip()
-instance_name = input("Enter the SageMaker notebook instance name: ").strip()
+region = input('Enter the AWS region: ').strip()
+instance_name = input('Enter the SageMaker notebook instance name: ').strip()
 
 stop_sagemaker_notebook(region, instance_name)
 

@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-19
+# Updated: 2023-08-24
 # 
 # Stops all SageMaker Notebooks in a given region
 import boto3

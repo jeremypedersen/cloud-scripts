@@ -1,11 +1,12 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-19
+# Updated: 2023-08-24
 #
 import boto3
 
 # Constants
-role_arn = 'arn:aws:iam::115727517926:role/service-role/SageMaker-NotebookExecutionRole'
+account_id = '115727517926'
+role_arn = f'arn:aws:iam::{account_id}:role/service-role/SageMaker-NotebookExecutionRole'
 
 # Take user inputs
 region = input('Enter region name: ').strip()
