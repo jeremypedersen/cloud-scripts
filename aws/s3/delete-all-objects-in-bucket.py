@@ -1,12 +1,16 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-24
+# Updated: 2023-10-06
 #
 # Delete all objects (and versions, and multipart upload fragments)
 # from a bucket
 #
 import boto3
+import argparse
 
+#############
+# Functions #
+#############
 def delete_all_objects(bucket_name, region):
     s3_client = boto3.client('s3', region_name=region)
 
@@ -40,9 +44,21 @@ def delete_all_objects(bucket_name, region):
 
     print(f'Deleted all objects and versions from bucket {bucket_name} in region {region}.')
 
-region = input('Enter the AWS region (e.g., us-west-1): ')
-bucket_name = input('Enter the name of the S3 bucket: ')
+##################
+# The real stuff #
+##################
+
+# Region name and bucket name should be included as command line 
+# arguments, parsed with argparse
+
+# Initialize the argument parser
+parser = argparse.ArgumentParser(description="A script to delete all S3 objects from a bucket")
+parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
+parser.add_argument('-b', '--bucket', type=str, required=True, help='The name of the S3 bucket (ex: my-s3-bucket)')
+
+# Parse the command line arguments
+args = parser.parse_args()
 
 print('Deleting...')
-delete_all_objects(bucket_name, region)
+delete_all_objects(args.bucket, args.region)
 print('Done!')

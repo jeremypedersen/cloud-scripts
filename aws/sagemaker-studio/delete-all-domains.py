@@ -2,7 +2,7 @@
 # Jeremy Pedersen (and ChatGPT)
 # Updated: 2023-08-24
 #
-# This script performs 'complete cleanup' of all the SageMaker domains
+# This script performs 'complete cleanup' of all SageMaker domains
 # in a given region. This includes:
 #
 # 1. Deleting all apps

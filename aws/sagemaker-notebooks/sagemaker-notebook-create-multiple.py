@@ -1,12 +1,37 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-24
+# Updated: 2023-10-06
 #
 import boto3
 
+#############
+# Constants #
+#############
+role_name = SageMaker-NotebookExecutionRole
+
+role_arn = f'arn:aws:iam::{account_id}:role/service-role/SageMaker-NotebookExecutionRole'
+
+
+# First, we need a function to fetch the current account ID 
+# (this will the be account ID) associated with the Access Key or
+# token being used by boto3 to authenticate against AWS. 
+def get_account_id():
+    # Create an STS client
+    sts = boto3.client('sts')
+    
+    # Call the 'get_caller_identity' method which returns details about the IAM user or role whose
+    # credentials are used to call the operation
+    response = sts.get_caller_identity()
+    
+    # Extract the account ID from the response
+    account_id = response['Account']
+    
+    return account_id
+
+
+
 # Constants
 account_id = '115727517926'
-role_arn = f'arn:aws:iam::{account_id}:role/service-role/SageMaker-NotebookExecutionRole'
 
 # Take user inputs
 region = input('Enter region name: ').strip()
