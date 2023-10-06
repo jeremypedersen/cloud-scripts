@@ -12,7 +12,11 @@ import argparse
 # Functions #
 #############
 
-def generate_signed_urls(region, bucket_name, csvfile):
+def generate_signed_urls(region, bucket_name, filename):
+    # Open a .csv file called 'urls'
+    csvfile = open(filename, 'w')
+    csvfile.write('Object Name, URL\n')
+
     # Initialize the S3 client
     s3 = boto3.client('s3', region_name=region)
 
@@ -44,7 +48,7 @@ def generate_signed_urls(region, bucket_name, csvfile):
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description="A script to delete all S3 objects from a bucket")
+parser = argparse.ArgumentParser(description="A script to create signed URLs for all objects in an S3 bucket, with a 12 hour expiration time")
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 parser.add_argument('-b', '--bucket', type=str, required=True, help='The name of the S3 bucket (ex: my-s3-bucket)')
 parser.add_argument('-o', '--output', type=str, required=True, help='The name of the output .csv file (ex: urls.csv)')
@@ -52,11 +56,7 @@ parser.add_argument('-o', '--output', type=str, required=True, help='The name of
 # Parse the command line arguments
 args = parser.parse_args()
 
-# Open a .csv file called 'urls'
-csvfile = open(args.output, 'w')
-csvfile.write('Object Name, URL\n')
-
 # Generate signed URLs
-print('Generating')
-generate_signed_urls(args.region, args.bucket, csvfile)
+print('Generating signed URLs..')
+generate_signed_urls(args.region, args.bucket, args.output)
 print('Done!')
