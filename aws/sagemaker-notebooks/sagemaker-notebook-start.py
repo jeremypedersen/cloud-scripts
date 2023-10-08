@@ -2,7 +2,10 @@
 # Author: Jeremy Pedersen (and ChatGPT)
 # Updated: 2023-10-08
 #
-# Deletes all SageMaker notebook instances in a region
+# Starts one or more stopped SageMaker Notebooks in a given region, matching a pattern
+#
+# NOTE: Pattern matching is case-insensitive 
+#
 import boto3
 import argparse
 
@@ -10,7 +13,7 @@ import argparse
 # Functions #
 #############
 
-def delete_all_notebooks(region):
+def start_notebooks(region, pattern):
     # Initialize the boto3 client
     sagemaker = boto3.client('sagemaker', region_name=region)
 
@@ -27,13 +30,14 @@ def delete_all_notebooks(region):
         # Iterate over each instance
         for instance in notebook_instances['NotebookInstances']:
             instance_name = instance['NotebookInstanceName']
-            
-            # Delete each notebook instance
-            print(f'Deleting {instance_name}...')
-            try:
-                sagemaker.delete_notebook_instance(NotebookInstanceName=instance_name)
-            except:
-                print(f'Unable to delete instance {instance_name}')
+
+            # Only start the notebook instance if it is in the Stopped state
+            if instance['NotebookInstanceStatus'] == 'Stopped' and pattern.lower() in instance_name.lower():
+                print(f'Starting {instance_name}...')
+                try:
+                    sagemaker.start_notebook_instance(NotebookInstanceName=instance_name)
+                except:
+                    print(f'Unable to start instance {instance_name}...')
         
         # If the response includes a NextToken, assign it to the variable for the next loop iteration
         if 'NextToken' in notebook_instances:
@@ -47,12 +51,13 @@ def delete_all_notebooks(region):
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description='A script to delete all SageMaker Notebooks in a given region')
+parser = argparse.ArgumentParser(description='A script to start all SageMaker Notebooks in a given region')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
+parser.add_argument('-p', '--pattern', type=str, required=True, help='The pattern to match for notebook names (ex: "my-notebook-")')
 
 # Parse the command line arguments
 args = parser.parse_args()
 
-print('Deleting all notebooks...')
-delete_all_notebooks(args.region)
+print('Starting notebook(s)...')
+start_notebooks(args.region, args.pattern)
 print('Done!')

@@ -2,7 +2,7 @@
 # Author: Jeremy Pedersen (and ChatGPT)
 # Updated: 2023-10-08
 # 
-# This script performs all the actions needed to create a set of SageMaker notebook
+# This script performs all the actions needed to create one or more SageMaker notebook
 # instances with:
 # 1. Permission to access a shared S3 bucket (read only on the whole bucket, plus write to a specific prefix)
 # 2. Permission to send logs to CloudWatch
