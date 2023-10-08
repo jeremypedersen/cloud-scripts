@@ -1,6 +1,6 @@
 #
 # Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-24
+# Updated: 2023-10-08
 #
 # This script performs 'complete cleanup' of all SageMaker domains
 # in a given region. This includes:
@@ -8,17 +8,18 @@
 # 1. Deleting all apps
 # 2. Deleting all spaces
 # 3. Deleting all user profiles
-# 4. Deleting any left-behind resources (EFS shared filesystems)
 #
-# Note that it does NOT delete Execution Roles, because it is assumed that you might want to
-# preserve the list of attached policies so you can re-create the permissions associated with 
-# each domain in the future
+# NOTE: You may need to run the script several times before it succeeds. It can
+# take a long time delete some resources (apps, spaces, user profiles), and some 
+# resources will not allow themselves to be deleted until their dependent resources
+# are successfully deleted. 
+#
+import boto3
 
-# NOTE: You may have to run the script more than once, as domains will fail to
-# delete properly if user profiles are still being deleted (which takes some time)
-import boto3, time
+#############
+# Functions #
+#############
 
-# Helpers
 def delete_all_apps(sagemaker):
 
     # Paginator for listing SageMaker applications
@@ -106,6 +107,7 @@ def delete_all_domains(sagemaker):
         for domain in domains:
             # Get the domain ID
             domain_id = domain['DomainId']
+            print('=' * 30)
             print(f'Deleting domain: {domain_id} ...')
             
             # Delete the domain
@@ -115,11 +117,9 @@ def delete_all_domains(sagemaker):
             except Exception as e:
                 print(f'Failed to delete domain {domain_id}. Error: {e}')
 
-    print('Finished deleting all SageMaker domains in the region.')
-
-#
-# Ok, let's clean up!
-# 
+##################
+# The real stuff #
+##################
 
 # Get user input for the region
 region_name = input('Please input the AWS region name (e.g., us-east-1): ')
@@ -128,22 +128,15 @@ sagemaker_client = boto3.client('sagemaker', region_name=region_name)
 # First, delete apps
 delete_all_apps(sagemaker_client)
 
-# Wait for apps to delete
-print('Pausing for 1 minute while apps delete...')
-time.sleep(60)
-
 # Then, delete all user profiles
 delete_all_user_profiles(sagemaker_client)
 
 # We also need to clean up any Spaces
 delete_all_spaces(sagemaker_client)
 
-# Pause before deleting domains, because it takes some time for apps, profiles, and spaces to delete
-print('Pausing for 1 minute while spaces delete...')
-time.sleep(60)
-
 # Finally, delete all domains
 delete_all_domains(sagemaker_client)
 
 # We're done!
-print('Done!')
+print('=' * 30)
+print('Done! Pay attention to the errors and warnings above (if any). You will probably need to run this script more than once.')

@@ -2,14 +2,10 @@
 # Author: Jeremy Pedersen (and ChatGPT)
 # Updated: 2023-10-08
 #
-# Delete all VPCs from a given region
+# Delete a specific VPC from a given region
 # 
-# WARNING: This script tries very hard to delete VPCs, which means it will
-# terminate associated EC2 instances and delete network interfaces and security groups also
-#
-# NOTE: This script is very much a work in progress. VPCs are trickier to delete than most other
-# AWS resources, because they have so many interdependencies with other resources such as NAT 
-# gateways, ENIs, Security Groups, service endpoints, and so on. 
+# This script borrows directly from vpc-delete-all.py, but deletes only a single
+# VPC, based on its VPC ID.
 #
 import boto3
 import argparse
@@ -151,6 +147,19 @@ def delete_vpc(region, vpc_id):
             ec2.delete_vpc_endpoints(VpcEndpointIds=endpoint_ids)
     except Exception as e:
         print(f"Error deleting VPC endpoints associated with VPC {vpc_id}: {e}")
+
+    # List all the VPC endpoints for the given VPC
+    response = ec2.describe_vpc_endpoints(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
+    vpc_endpoints = response['VpcEndpoints']
+    
+    for vpc_endpoint in vpc_endpoints:
+        endpoint_id = vpc_endpoint['VpcEndpointId']
+        try:
+            print(f'Deleting VPC Endpoint {endpoint_id}...')
+            ec2_client.delete_vpc_endpoints(VpcEndpointIds=[endpoint_id])
+            print(f'VPC Endpoint {endpoint_id} deleted successfully!')
+        except Exception as e:
+            print(f'Failed to delete VPC Endpoint {endpoint_id}. Reason: {e}')
 
     # Delete the vpc
     try:
