@@ -15,6 +15,8 @@ Usernames, passwords, and IAM logon links are stored in a `.csv` file created by
 
 The number of users to create, IAM group name, IAM username prefix, and output file can all be specified on the command line. If they are not specified, default values will be used.
 
+**Getting help**: Run the script with `python3 dr-create-users.py -h`
+
 ## `dr-delete-users.py`
 
 This script deletes the resources created by `dr-create-users.py`.
@@ -24,3 +26,5 @@ The script accepts optional command line arguments for the username prefix and g
 **Warning:** This script will delete any IAM user or group matching the patterns given, so be careful.
 
 The script is designed to fail gracefully and be safe to re-run. 
+
+**Getting help**: Run the script with `python3 dr-delete-users.py -h`
