@@ -96,14 +96,14 @@ def delete_iam_users(pattern):
 ##################
 
 parser = argparse.ArgumentParser(description='A script to delete IAM users matching a specific pattern, and their attached policies')
-parser.add_argument('-u', '--user-pattern', type=str, required=False, help='The IAM username prefix to match (ex: notebook-user)')
+parser.add_argument('-p', '--pattern', type=str, required=False, help='The IAM username prefix to match (ex: notebook-user)')
 
 # Parse the command line arguments
 args = parser.parse_args()
 
 # Delete the users matching the pattern
-if args.user_pattern:
-    delete_iam_users(args.user_pattern)
+if args.pattern:
+    delete_iam_users(args.pattern)
 else:
     delete_iam_users('notebook-user')
 

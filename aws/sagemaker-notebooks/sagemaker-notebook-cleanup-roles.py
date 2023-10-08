@@ -79,14 +79,14 @@ def delete_iam_roles(pattern):
 ##################
 
 parser = argparse.ArgumentParser(description='A script to delete IAM roles (and attached policies) matching a specific pattern')
-parser.add_argument('-r', '--role-pattern', type=str, required=False, help='The SageMaker execution role pattern to match (ex: ExecutionRoleBatch)')
+parser.add_argument('-p', '--pattern', type=str, required=False, help='The SageMaker execution role pattern to match (ex: ExecutionRoleBatch)')
 
 # Parse the command line arguments
 args = parser.parse_args()
 
 # Delete the roles matching the pattern    
-if args.role_pattern:
-    delete_iam_roles(args.role_pattern)
+if args.pattern:
+    delete_iam_roles(args.pattern)
 else:
     delete_iam_roles('ExecutionRoleBatch')
 
