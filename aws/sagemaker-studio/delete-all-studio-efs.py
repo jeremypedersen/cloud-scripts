@@ -2,9 +2,9 @@
 # Author: Jeremy Pedersen (and ChatGPT)
 # Updated: 2023-08-24
 #
-# This script deletes all the EFS filesystems in a region. We need to do
-# this because deleting a SageMaker domain does not automatically delete 
-# associated EFS filesystems.
+# This script deletes all the (SageMaker created) EFS filesystems in a region. 
+# We need to do this because deleting a SageMaker domain does not automatically 
+# delete associated EFS filesystems.
 #
 # NOTE: We try to be careful by only deleting filesystems tagged with 'ManagedByAmazonSageMakerResource'
 import boto3, time

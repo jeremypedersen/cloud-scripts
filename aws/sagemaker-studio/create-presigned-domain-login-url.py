@@ -1,3 +1,7 @@
+#
+# Jeremy Pedersen (and ChatGPT)
+# Updated: ?
+#
 import boto3
 
 user = input('Enter username: ').strip()
