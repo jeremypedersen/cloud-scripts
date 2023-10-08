@@ -9,7 +9,6 @@
 import boto3
 import time
 import argparse
-import random
 import csv
 
 #############
@@ -73,7 +72,7 @@ def create_users(user_prefix, group_name, num_users, filename):
     # Create users
     for i in range(1, num_users+1):
         username = f'{user_prefix}-{i}'
-        password = f'{username}-{random.randint(10000,99999)}$' # Assign a random password (user will change on first login)
+        password = f'{username}-{i}$' # Assign a random password (user will change on first login)
         print(f'Creating user {username}')
 
         # Create user
@@ -114,7 +113,7 @@ parser = argparse.ArgumentParser(description='A to create DeepRacer IAM and atta
 parser.add_argument('-u', '--user-prefix', type=str, required=False, help='The prefix to use for the user names (ex: deepracer)')
 parser.add_argument('-g', '--group-name', type=str, required=False, help='The name of the IAM group to create (ex: DeepRacerUsers)')
 parser.add_argument('-n', '--num-users', type=int, required=False, help='The number of users to create (ex: 10)')
-parser.add_argument('-o', '--output-file', type=str, required=True, help='The name of the .csv file to store the usernames and passwords')
+parser.add_argument('-o', '--output-file', type=str, required=False, help='The name of the .csv file to store the usernames and passwords')
 
 # Parse the command line arguments
 args = parser.parse_args()
@@ -123,17 +122,20 @@ args = parser.parse_args()
 user_prefix = 'deepracer'
 group_name = 'DeepRacerUsers'
 num_users = 1
+filename = 'users.csv'
 
 # Override defaults with command line arguments
-if args.user_prefix != None:
+if args.user_prefix:
     user_prefix = args.user_prefix
-if args.group_name != None:
+if args.group_name:
     group_name = args.group_name
-if args.num_users != None:
+if args.num_users:
     num_users = args.num_users
+if args.output_file:
+    filename = args.output_file
 
 # Create IAM Users
-create_users(user_prefix, group_name, num_users, args.output_file)
+create_users(user_prefix, group_name, num_users, filename)
 
 # Create a log to keep track of the group and user prefix values, which we may
 # need later when deleting users

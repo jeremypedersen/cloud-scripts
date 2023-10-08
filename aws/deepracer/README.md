@@ -1,32 +1,26 @@
 # DeepRacer Scripts
 
-Scripts to help setup and manage [AWS DeepRacer](https://docs.aws.amazon.com/deepracer/latest/developerguide/what-is-deepracer.html).
+Scripts to help set up and manage [AWS DeepRacer](https://docs.aws.amazon.com/deepracer/latest/developerguide/what-is-deepracer.html) users.
 
 ## `dr-create-users.py`
 
-This script creates a set of DeepRacer users. It takes a number as input.
-
-If the user inputs `10`, the script will create new IAM users called `deepracer_1` through `deepracer_10`. If the user inputs `100`, the users will be `deepracer_1` through `deepracer_100`. 
-
-The script also creates an IAM user group called `DeepRacerUsers` and attaches two IAM policies:
+This script creates a set of IAM users and attaches them to a group with the following policies attached:
 
 ```
 arn:aws:iam::aws:policy/AWSDeepRacerDefaultMultiUserAccess
 arn:aws:iam::aws:policy/IAMUserChangePassword
 ```
 
-The script takes each new IAM user and adds them to the `DeepRacerUsers` group, then **writes a `users.csv` file to disk**.
+Usernames, passwords, and IAM logon links are stored in a `.csv` file created by the script.
 
-The file contains (on each line) a username, password, and IAM logon URL.
-
-The script can be safely re-run: it will simply skip any steps that cannot be successfully completed (using Python's `try/except`).
+The number of users to create, IAM group name, IAM username prefix, and output file can all be specified on the command line. If they are not specified, default values will be used.
 
 ## `dr-delete-users.py`
 
-This script deletes all the resources created by `dr-create-users.py`. 
+This script deletes the resources created by `dr-create-users.py`.
 
-Note that the script will fail to remove the user group if any additional IAM policies have been added to the group beyond the ones added by `dr-create-users.py`.
+The script accepts optional command line arguments for the username prefix and group name. If they are not specified, it tries to delete users and groups matching the default user prefix and group name from `dr-create-users.py`.
 
-**Warning:** This script deletes any IAM user prefixed with `deepracer`. **Not just users created by `dr-create-users.py`.**
+**Warning:** This script will delete any IAM user or group matching the patterns given, so be careful.
 
-This script can also be safely re-run.
+The script is designed to fail gracefully and be safe to re-run. 
