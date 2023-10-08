@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-26
+# Updated: 2023-10-08
 #
 # Delete all NAT GWs from a given region
 #
@@ -9,6 +9,11 @@
 #
 import boto3
 import time
+import argparse
+
+#############
+# Functions #
+#############
 
 def delete_nat_gateways(region_name):
     ec2 = boto3.client('ec2', region_name=region_name)
@@ -34,5 +39,16 @@ def delete_nat_gateways(region_name):
         except Exception as e:
             print(f"Failed to delete NAT Gateway {nat_gateway_id} or release its EIP due to {str(e)}")
 
-region = input("Delete all NAT gateways from this region (ex: us-east-1): ").strip()
-delete_nat_gateways(region)
+##################
+# The real stuff #
+##################
+
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='A script to delete all the NAT Gateways in a specified region')
+parser.add_argument("-r", "--region", type=str, required=True, help='Region to delete NAT gateways from')
+
+args = parser.parse_args()
+
+delete_nat_gateways(args.region)
+
+print('Done!')

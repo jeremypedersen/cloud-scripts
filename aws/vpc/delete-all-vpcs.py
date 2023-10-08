@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-24 
+# Updated: 2023-10-08
 #
 # Delete all VPCs from a given region
 # 
@@ -12,6 +12,11 @@
 # gateways, ENIs, Security Groups, service endpoints, and so on. 
 #
 import boto3
+import argparse
+
+#############
+# Functions #
+#############
 
 def delete_vpc(ec2, vpc_id):
 
@@ -152,14 +157,24 @@ def delete_vpc(ec2, vpc_id):
         print(f"Unable to delete VPC {vpc_id}, continuing on...")
         print(f'Error: {e}')
 
-region = input('Enter the AWS region (e.g., us-west-1): ')
+def delete_all_vpcs(region):
+    ec2 = boto3.client('ec2', region_name=region)
 
-ec2 = boto3.client('ec2', region_name=region)
+    # Get all the VPCs
+    vpcs = ec2.describe_vpcs()['Vpcs']
 
-# Get all the VPCs
-vpcs = ec2.describe_vpcs()['Vpcs']
+    for vpc in vpcs:
+        delete_vpc(ec2, vpc['VpcId'])
 
-for vpc in vpcs:
-    delete_vpc(ec2, vpc['VpcId'])
+##################
+# The real stuff #
+##################
 
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='A script to delete all the VPCs in a specified region')
+parser.add_argument('-r', '--region', type=str, required=True, help='Region to delete NAT gateways from')
+
+args = parser.parse_args()
+
+delete_all_vpcs(args.region)
 print('Done!')
