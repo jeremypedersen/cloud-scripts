@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 #
 # Deletes all SageMaker notebook instances in a region
 import boto3
@@ -47,7 +47,7 @@ def delete_all_notebooks(region):
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description="A script to delete all SageMaker notebooks in a given region")
+parser = argparse.ArgumentParser(description='A script to delete all SageMaker Notebooks in a given region')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 
 # Parse the command line arguments

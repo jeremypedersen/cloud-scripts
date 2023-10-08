@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 #
 # Generates signed URLs for all SageMaker Notebooks in a region
 import boto3
@@ -63,7 +63,7 @@ def make_notebook_links(region, file_name):
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description="A script to generate signed URLs for all SageMaker notebooks in a given region")
+parser = argparse.ArgumentParser(description='A script to generate signed URLs for all SageMaker Notebooks in a given region')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 parser.add_argument('-o', '--output', type=str, required=True, help='The name of the CSV file to write the URLs to (ex: links.csv)')
 

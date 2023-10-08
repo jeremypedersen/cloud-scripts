@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 # 
 # Starts a single, named SageMaker Notebook in a given region
 import boto3
@@ -25,7 +25,7 @@ def start_sagemaker_notebook(region, instance_name):
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description='A script to start a single SageMaker notebook instance in a given region')
+parser = argparse.ArgumentParser(description='A script to start a single SageMaker Notebook instance in a given region')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 parser.add_argument('-n', '--notebook', type=str, required=True, help='The name of the SageMaker notebook instance to stop (ex: my-notebook-instance)')
 

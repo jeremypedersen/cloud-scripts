@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 #
 # Stops a single, named SageMaker Notebook in a given region
 import boto3
@@ -26,7 +26,7 @@ def stop_sagemaker_notebook(region, instance_name):
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description="A script to stop a single SageMaker notebook instance")
+parser = argparse.ArgumentParser(description='A script to stop a single SageMaker Notebook instance')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 parser.add_argument('-n', '--notebook', type=str, required=True, help='The name of the SageMaker notebook instance to stop (ex: my-notebook-instance)')
 

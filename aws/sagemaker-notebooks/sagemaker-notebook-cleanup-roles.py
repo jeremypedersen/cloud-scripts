@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 # 
 # This script is used to help clean up SageMaker notebook execution roles
 #
@@ -87,7 +87,7 @@ parser.add_argument('-r', '--role-pattern', type=str, required=False, help='The 
 args = parser.parse_args()
 
 # Delete the roles matching the pattern    
-if args.role_pattern != None:
+if args.role_pattern:
     delete_iam_roles(args.role_pattern)
 else:
     delete_iam_roles('ExecutionRoleBatch')

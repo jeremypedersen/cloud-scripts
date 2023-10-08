@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 # 
 # This script is used to help clean up SageMaker IAM users
 
@@ -95,14 +95,14 @@ def delete_iam_users(pattern):
 # The real stuff #
 ##################
 
-parser = argparse.ArgumentParser(description='A script to delete IAM users matching a specific pattern')
+parser = argparse.ArgumentParser(description='A script to delete IAM users matching a specific pattern, and their attached policies')
 parser.add_argument('-u', '--user-pattern', type=str, required=False, help='The IAM username pattern to match (ex: notebook-user)')
 
 # Parse the command line arguments
 args = parser.parse_args()
 
 # Delete the users matching the pattern
-if args.user_pattern != None:
+if args.user_pattern:
     delete_iam_users(args.user_pattern)
 else:
     delete_iam_users('notebook-user')

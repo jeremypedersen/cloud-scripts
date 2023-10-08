@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 # 
 # This script performs all the actions needed to create a set of SageMaker notebook
 # instances with:
@@ -104,7 +104,7 @@ def create_execution_role(bucket_name, postfix):
     except:
         print('Unable to attach permission for Polly, assuming they are already there')
 
-    if bucket_name != None:
+    if bucket_name:
         # 2. Read-only permissions on a shared S3 bucket, plus write permission to 
         # a specific prefix
         bucket_policy = {
@@ -284,16 +284,7 @@ def create_notebook_instances(region, bucket_name, num_instances, instance_type,
         # Attaching lifecycle configurations is optional, so we need to make two separate calls depending on
         # whether or not a lifecycle configuration was specified
         try:
-            if lifecycle == None:
-                sagemaker.create_notebook_instance(
-                    NotebookInstanceName=instance_name,
-                    InstanceType=instance_type,
-                    RoleArn=role_arn,
-                    DirectInternetAccess='Enabled',
-                    RootAccess='Enabled',
-                    VolumeSizeInGB=disksize
-                )
-            else:
+            if lifecycle:
                 sagemaker.create_notebook_instance(
                     NotebookInstanceName=instance_name,
                     InstanceType=instance_type,
@@ -303,6 +294,15 @@ def create_notebook_instances(region, bucket_name, num_instances, instance_type,
                     VolumeSizeInGB=disksize,
                     LifecycleConfigName=lifecycle  # Added this line to attach the lifecycle policy
                 )
+            else:
+                sagemaker.create_notebook_instance(
+                    NotebookInstanceName=instance_name,
+                    InstanceType=instance_type,
+                    RoleArn=role_arn,
+                    DirectInternetAccess='Enabled',
+                    RootAccess='Enabled',
+                    VolumeSizeInGB=disksize
+                )
         except:
             print(f'Unable to create instance {instance_name}, perhaps it already exists?')
 
@@ -311,7 +311,7 @@ def create_notebook_instances(region, bucket_name, num_instances, instance_type,
 ##################
 
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description="A script to create multiple SageMaker notebooks in a given region")
+parser = argparse.ArgumentParser(description='A script to create multiple SageMaker Notebooks in a given region')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 parser.add_argument('-n', '--number', type=int, required=True, help='The number of SageMaker notebooks to create')
 parser.add_argument('-t', '--type', type=str, required=True, help='The instance type to use (ex: ml.g4dn.2xlarge, ml.g5.2xlarge)')

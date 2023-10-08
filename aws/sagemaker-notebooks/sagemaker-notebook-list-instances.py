@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-06
+# Updated: 2023-10-08
 # 
 # This script lists all SageMaker notebook instances in the current region
 #
@@ -32,7 +32,7 @@ def list_notebook_instances(region):
 
     return notebook_instances
 
-parser = argparse.ArgumentParser(description='List SageMaker Notebook Instances for a given AWS region.')
+parser = argparse.ArgumentParser(description='List all SageMaker Notebook Instances in a given region.')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 
 args = parser.parse_args()
