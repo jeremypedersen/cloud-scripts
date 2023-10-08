@@ -1,8 +1,13 @@
 # List all snapshots in a given region
 # 
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-09-10
+# Updated: 2023-10-08
 import boto3
+import argparse
+
+#############
+# Functions #
+#############
 
 def list_ebs_snapshots(region_name):
     # Create an EC2 client object using the specified region
@@ -13,14 +18,21 @@ def list_ebs_snapshots(region_name):
 
     # Print the header
     print(f"Listing all EBS snapshots in region {region_name}:")
-    print('-' * 60)
 
-    # Iterate through all snapshots and print their details
-    for snapshot in snapshots['Snapshots']:
-        for key, value in snapshot.items():
-            print(f"{key}: {value}")
+    for snap in snapshots['Snapshots']:
         print('-' * 60)
+        print(f"Snapshot ID: {snap['SnapshotId']}\nProgress: {snap['Progress']}\nStatus: {snap['State']}")
+        
+##################
+# The real stuff #
+##################
 
-# Fetch region name
-region = input("Enter AWS region (such as us-west-2): ").strip()
-list_ebs_snapshots(region)
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='A script to list all snapshots in a specified region')
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region name (ex: us-east-1)')
+
+args = parser.parse_args()
+
+list_ebs_snapshots(args.region)
+print('-' * 60)
+print('Done!')
