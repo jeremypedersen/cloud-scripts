@@ -22,8 +22,6 @@ def delete_iam_roles(pattern):
     for role in roles:
         role_name = role['RoleName']
 
-        #print(f'Looking at role {role_name}')
-
         if pattern.lower() in role_name.lower():
             print(f'Trying to delete role {role_name}...')
             
