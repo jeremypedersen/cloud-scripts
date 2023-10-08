@@ -139,7 +139,7 @@ create_users(user_prefix, group_name, num_users, filename)
 
 # Create a log to keep track of the group and user prefix values, which we may
 # need later when deleting users
-with open(args.output_file.split('.')[0] + '.log', 'w') as f:
+with open(filename.split('.')[0] + '.log', 'w') as f:
     f.write(f'User prefix: {user_prefix}\n')
     f.write(f'Group name: {group_name}\n')
 
