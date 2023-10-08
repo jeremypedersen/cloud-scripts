@@ -12,8 +12,8 @@ import argparse
 # Functions #
 #############
 
-def delete_all_objects(bucket_name, region):
-    s3_client = boto3.client('s3', region_name=region)
+def delete_all_objects(bucket_name):
+    s3_client = boto3.client('s3')
 
     # Delete all object versions and delete markers
     object_versions = s3_client.list_object_versions(Bucket=bucket_name)
@@ -43,7 +43,7 @@ def delete_all_objects(bucket_name, region):
                 UploadId=upload['UploadId']
             )
 
-    print(f'Deleted all objects and versions from bucket {bucket_name} in region {region}.')
+    print(f'Deleted all objects and versions from bucket {bucket_name}.')
 
 ##################
 # The real stuff #
@@ -54,12 +54,11 @@ def delete_all_objects(bucket_name, region):
 
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="A script to delete all S3 objects from a bucket")
-parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region to use (ex: us-west-1)')
 parser.add_argument('-b', '--bucket', type=str, required=True, help='The name of the S3 bucket (ex: my-s3-bucket)')
 
 # Parse the command line arguments
 args = parser.parse_args()
 
 print('Deleting all objects...')
-delete_all_objects(args.bucket, args.region)
+delete_all_objects(args.bucket)
 print('Done!')

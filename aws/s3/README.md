@@ -10,4 +10,3 @@ Goes through every single object in a bucket, generating 12-hour signed URLs for
 
 Deletes all the objects in a bucket, including old versions (for versioned buckets) and any fragments leftover from multi-part uploads. The bucket name is specified using a command line argument. 
 
-
