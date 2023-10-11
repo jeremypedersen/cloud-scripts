@@ -1,7 +1,9 @@
-# List all snapshots in a given region
 # 
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-08
+# Updated: 2023-10-11
+#
+# List all snapshots in a given region
+#
 import boto3
 import argparse
 

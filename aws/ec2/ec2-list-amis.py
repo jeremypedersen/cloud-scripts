@@ -1,9 +1,15 @@
+#
+# Author: Jeremy Pedersen (and ChatGPT)
+# Updated: 2023-10-11
+#
 # List all AMIs (and linked snapshots) in a given region
 # 
-# Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-08
 import boto3
 import argparse
+
+#############
+# Functions #
+#############
 
 def list_amis_and_snapshots(region):
     ec2 = boto3.resource('ec2', region_name=region)

@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-08
+# Updated: 2023-10-11
 #
 # Delete a specific VPC from a given region
 # 
@@ -19,7 +19,7 @@ def delete_vpc(region, vpc_id):
     ec2 = boto3.client('ec2', region_name=region)
 
     print('=' * 30)
-    print(f"Deleting VPC {vpc_id}")
+    print(f'Deleting VPC {vpc_id}')
     print('=' * 30)
     
     # Delete NAT Gateways and their associated EIPs
