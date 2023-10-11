@@ -14,6 +14,10 @@ from datetime import datetime
 # Functions #
 #############
 
+def get_instance_name(instance):
+    tags_dict = {tag['Key']: tag['Value'] for tag in instance.tags}
+    return tags_dict.get('Name', 'untagged')
+
 def take_snapshot_and_register_ami(region_name):
     # Create EC2 resource and client
     ec2_resource = boto3.resource('ec2', region_name=region_name)
@@ -28,18 +32,11 @@ def take_snapshot_and_register_ami(region_name):
     for instance in instances:
         for volume in instance.volumes.all():
             # Create snapshot
-            snapshot_name = f"{current_datetime}-{instance.tags['Name']}"
+            name = get_instance_name(instance)
+            snapshot_name = f"{current_datetime}-{name}"
             snapshot = ec2_client.create_snapshot(VolumeId=volume.id, Description=f'Snapshot for {instance.id}', TagSpecifications=[{'ResourceType': 'snapshot', 'Tags': [{'Key': 'Name', 'Value': snapshot_name}]}])
 
             print(f"Snapshot created with ID {snapshot['SnapshotId']} for volume {volume.id} attached to instance {instance.id}.")
-
-            # If the volume is a root device, register it as an AMI
-            if volume.id == instance.root_device_name:
-                ami_name = f"{current_datetime}-{instance.tags['Name']}"
-                ami_description = f"AMI based on {snapshot_name}"
-                ami = ec2_client.register_image(Name=ami_name, Description=ami_description, Architecture='x86_64', RootDeviceName=instance.root_device_name, BlockDeviceMappings=[{'DeviceName': instance.root_device_name, 'Ebs': {'SnapshotId': snapshot['SnapshotId']}}])
-
-                print(f"AMI created with ID {ami['ImageId']} based on snapshot {snapshot['SnapshotId']}.")
 
 ##################
 # The real stuff #

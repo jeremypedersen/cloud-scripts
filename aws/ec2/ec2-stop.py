@@ -35,10 +35,9 @@ def stop_all_ec2_instances(region):
 
 # Parse the command-line arguments
 parser = argparse.ArgumentParser(description='Stop all EC2 instances in a specified AWS region.')
-parser.add_argument("region", type=str, required=True, help="AWS region name (ex: us-west-2)")
+parser.add_argument('-r', '--region', type=str, required=True, help="AWS region name (ex: us-west-2)")
 args = parser.parse_args()
 
 # Stop all instances in the given region
 stop_all_ec2_instances(args.region)
-
-
+print('Done!')

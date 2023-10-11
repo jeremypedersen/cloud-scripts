@@ -42,3 +42,4 @@ args = parser.parse_args()
 
 # Call the function to start the instances
 start_all_ec2_instances(args.region)
+print('Done!')

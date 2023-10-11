@@ -44,4 +44,4 @@ parser.add_argument('-r', '--region', type=str, required=True, help='AWS region 
 
 args = parser.parse_args()
 terminate_stopped_ec2_instances(args.region)
-
+print('Done!')
