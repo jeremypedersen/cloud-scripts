@@ -1,6 +1,6 @@
 # 
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-11
+# Updated: 2023-10-13
 #
 # Given an AWS region as input, update all the launch templates
 # in the region to use the latest version and delete all older versions.
@@ -41,14 +41,14 @@ def set_default_to_latest_and_delete_old_versions(region_name):
                 # Handle cases where the version might have been deleted previously
                 print(f'Error deleting version {version_number} of {launch_template_id}. Error: {str(e)}')
 
-    print(f'Processed {len(launch_templates)} launch templates in {region_name}')
+    print(f'Processed {len(launch_templates)} launch template(s) in {region_name}')
 
 ##################
 # The real stuff #
 ##################
 
 parser = argparse.ArgumentParser(description='Update AWS launch templates in the given region.')
-parser.add_argument('region_name', help='AWS region name (ex: us-west-1)')
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region name (ex: us-west-1)')
 args = parser.parse_args()
 
-set_default_to_latest_and_delete_old_versions(args.region_name)
+set_default_to_latest_and_delete_old_versions(args.region)
