@@ -46,9 +46,9 @@ def create_ami_from_snapshot(region):
                 ],
                 DryRun=False  # Set to True to test without actually creating the AMI
             )
+            print(f"AMI created: {response['ImageId']}")
         except:
             print(f'Unable to create AMI from snapshot {snapshot_id}, continuing...')
-            print(f"AMI created: {response['ImageId']}")
 
 ##################
 # The real stuff #
