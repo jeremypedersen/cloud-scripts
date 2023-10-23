@@ -57,7 +57,7 @@ def create_ami_from_snapshot(region):
 ##################
 
 parser = argparse.ArgumentParser(description="Create AMIs from EBS snapshots")
-parser.add_argument("--region", required=True, help="AWS region")
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region')
 args = parser.parse_args()
 
 create_ami_from_snapshot(args.region)
