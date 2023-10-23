@@ -48,9 +48,7 @@ def create_ami_from_snapshot(region):
             )
         except:
             print(f'Unable to create AMI from snapshot {snapshot_id}, continuing...')
-    
-        
-        print(f"AMI created: {response['ImageId']}")
+            print(f"AMI created: {response['ImageId']}")
 
 ##################
 # The real stuff #
@@ -61,3 +59,4 @@ parser.add_argument('-r', '--region', type=str, required=True, help='AWS region'
 args = parser.parse_args()
 
 create_ami_from_snapshot(args.region)
+print('Done!')
