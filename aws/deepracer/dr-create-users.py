@@ -1,6 +1,6 @@
 # 
 # Author: Jeremy Pedersen
-# Updated: 2023-10-08
+# Updated: 2023-10-25
 #
 # Create multiple DeepRacer IAM users, for use with 
 # DeepRacer's multi-user feature, documented here:
