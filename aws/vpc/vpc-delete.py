@@ -3,9 +3,6 @@
 # Updated: 2023-10-11
 #
 # Delete a specific VPC from a given region
-# 
-# This script borrows directly from vpc-delete-all.py, but deletes only a single
-# VPC, based on its VPC ID.
 #
 import boto3
 import argparse
