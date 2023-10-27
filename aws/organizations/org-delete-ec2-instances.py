@@ -87,7 +87,11 @@ def stop_all_ec2_instances(region):
                 except:
                     print(f'EC2 instance {instance_id} could not be deleted, continuing...')
 
-parser = argparse.ArgumentParser(description='Shutdown all EC2 instances in every AWS Organizations account in a specific AWS region.')
+##################
+# The real stuff #
+##################
+
+parser = argparse.ArgumentParser(description='Delete all EC2 instances in every AWS Organizations account in a specific AWS region.')
 parser.add_argument('-r', '--region', type=str, required=True, help='The AWS region where EC2 instances should be shut down.')
 args = parser.parse_args()
 

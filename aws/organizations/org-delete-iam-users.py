@@ -10,6 +10,32 @@ import boto3
 # Functions #
 #############
 
+def delete_iam_user(user_name, iam_client):
+    # List and delete access keys
+    access_keys = iam_client.list_access_keys(UserName=user_name)
+    for key in access_keys['AccessKeyMetadata']:
+        access_key_id = key['AccessKeyId']
+        iam_client.delete_access_key(UserName=user_name, AccessKeyId=access_key_id)
+
+    # Delete attached policies
+    attached_policies = iam_client.list_attached_user_policies(UserName=user_name)
+    for policy_arn in attached_policies['AttachedPolicies']:
+        iam_client.detach_user_policy(UserName=user_name, PolicyArn=policy_arn['PolicyArn'])
+    
+    # Delete inline policies
+    inline_policies = iam_client.list_user_policies(UserName=user_name)
+    for policy_name in inline_policies['PolicyNames']:
+        iam_client.delete_user_policy(UserName=user_name, PolicyName=policy_name)
+
+    # Delete login profile if it exists
+    try:
+        iam_client.delete_login_profile(UserName=user_name)
+    except iam_client.exceptions.NoSuchEntityException:
+        pass  # Login profile doesn't exist, so no need to delete it
+    
+    # Delete the user
+    iam_client.delete_user(UserName=user_name)
+
 # Function to get root account ID
 def get_root_account_id():
     # Create an STS client
@@ -53,7 +79,7 @@ def delete_all_iam_users():
     root_account = get_root_account_id()
 
     # Delete all IAM users from all accounts
-    for account in accounts['Accounts']:
+    for account in accounts:
         account_id = account['Id']
         
         if account_id != root_account:
@@ -68,25 +94,20 @@ def delete_all_iam_users():
                 RoleSessionName='DeleteIAMUsersSession'
             )
             
-            # Create a session for the target account
-            target_session = boto3.Session(
+            iam_client =  boto3.client(
+                'iam',
                 aws_access_key_id=assume_role_response['Credentials']['AccessKeyId'],
                 aws_secret_access_key=assume_role_response['Credentials']['SecretAccessKey'],
                 aws_session_token=assume_role_response['Credentials']['SessionToken']
             )
             
-            # Initialize the IAM client for the target account
-            iam_client = target_session.client('iam')
-            
             users = get_all_users(iam_client)
             
             # Delete all IAM users in the target account
-            for user in users['Users']:
+            for user in users:
                 user_name = user['UserName']
-                print(f'Deleting IAM user {user_name} in account {account_id}')
-                iam_client.delete_user(UserName=user_name)
-            
-            print(f'IAM users deleted in account {account_id}')
+                print(f'Deleting user {user_name}')
+                delete_iam_user(user_name, iam_client)
 
 ##################
 # The real stuff #
