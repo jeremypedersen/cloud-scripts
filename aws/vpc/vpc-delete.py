@@ -126,7 +126,7 @@ def delete_vpc(region, vpc_id):
         for entry in nacl['Entries']:
 
             # Safety check: skip rules with no rule number
-            if entry['RuleNumber'] = '*':
+            if entry['RuleNumber'] == '*':
                 continue
 
             if not entry['Egress'] and entry['RuleNumber'] != 32767:
@@ -136,7 +136,7 @@ def delete_vpc(region, vpc_id):
         for entry in nacl['Entries']:
 
             # Safety check: skip rules with no rule number
-            if entry['RuleNumber'] = '*':
+            if entry['RuleNumber'] == '*':
                 continue
 
             if entry['Egress'] and entry['RuleNumber'] != 32767:
