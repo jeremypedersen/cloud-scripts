@@ -125,19 +125,11 @@ def delete_vpc(region, vpc_id):
         # Delete inbound rules
         for entry in nacl['Entries']:
 
-            # Safety check: skip rules with no rule number
-            if entry['RuleNumber'] == '*':
-                continue
-
             if not entry['Egress'] and entry['RuleNumber'] != 32767:
                 ec2.delete_network_acl_entry(NetworkAclId=nacl['NetworkAclId'], RuleNumber=entry['RuleNumber'], Egress=False)
 
         # Delete outbound rules
         for entry in nacl['Entries']:
-
-            # Safety check: skip rules with no rule number
-            if entry['RuleNumber'] == '*':
-                continue
 
             if entry['Egress'] and entry['RuleNumber'] != 32767:
                 ec2.delete_network_acl_entry(NetworkAclId=nacl['NetworkAclId'], RuleNumber=entry['RuleNumber'], Egress=True)
