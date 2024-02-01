@@ -1,11 +1,9 @@
 import boto3
+import argparse
 from botocore.exceptions import ClientError
 
 # Initialize a Route53 client
 client = boto3.client('route53')
-
-# Specify your hosted zone ID
-hosted_zone_id = 'YOUR_HOSTED_ZONE_ID'
 
 def export_route53_records(hosted_zone_id):
     try:
@@ -29,8 +27,21 @@ def export_route53_records(hosted_zone_id):
         print(f"An error occurred: {e}")
         return None
 
-# Call the function to export the records
-exported_records = export_route53_records(hosted_zone_id)
+def main():
+    # Initialize the parser
+    parser = argparse.ArgumentParser(description="Export all records from an AWS Route53 hosted zone.")
+    
+    # Add the hosted_zone_id argument
+    parser.add_argument("hosted_zone_id", help="The Hosted Zone ID of the AWS Route53 records you want to export.")
+    
+    # Parse the arguments
+    args = parser.parse_args()
+    
+    # Call the function to export the records
+    exported_records = export_route53_records(args.hosted_zone_id)
+    
+    # Process or store the exported_records as needed, for example:
+    # print(exported_records)
 
-# Process or store the exported_records as needed, for example:
-# print(exported_records)
+if __name__ == "__main__":
+    main()
