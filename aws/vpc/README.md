@@ -1,4 +1,4 @@
-# VPC management scripts.
+# VPC scripts.
 
 The scripts here help manage VPCs and associated resources like Security Groups and NAT Gateways.
 

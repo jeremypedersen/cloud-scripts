@@ -1,9 +1,19 @@
+#
+# Author: Jeremy Pedersen (and ChatGPT)
+# Updated: 2024-02-04
+#
+# Export all the Route 53 records in a hosted zone
+#
 import boto3
 import argparse
 from botocore.exceptions import ClientError
 
 # Initialize a Route53 client
 client = boto3.client('route53')
+
+####################
+# Helper functions #
+####################
 
 def export_route53_records(hosted_zone_id):
     try:
@@ -27,21 +37,20 @@ def export_route53_records(hosted_zone_id):
         print(f"An error occurred: {e}")
         return None
 
-def main():
-    # Initialize the parser
-    parser = argparse.ArgumentParser(description="Export all records from an AWS Route53 hosted zone.")
-    
-    # Add the hosted_zone_id argument
-    parser.add_argument("hosted_zone_id", help="The Hosted Zone ID of the AWS Route53 records you want to export.")
-    
-    # Parse the arguments
-    args = parser.parse_args()
-    
-    # Call the function to export the records
-    exported_records = export_route53_records(args.hosted_zone_id)
-    
-    # Process or store the exported_records as needed, for example:
-    # print(exported_records)
+##################
+# The real stuff #
+##################
 
-if __name__ == "__main__":
-    main()
+# Initialize the argument parser
+parser = argparse.ArgumentParser(description="A script to export all records from a Route53 Hosted Zone")
+parser.add_argument('-b', '--zone-id', type=str, required=True, help='ID of the hosted zone')
+
+# Parse the command line arguments
+args = parser.parse_args()
+
+# Call the function to export the records
+exported_records = export_route53_records(args.hosted_zone_id)
+
+# Write output to file
+with open('records.txt', 'w') as f:
+    f.write(exported_records)
