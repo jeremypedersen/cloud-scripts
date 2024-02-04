@@ -1,4 +1,4 @@
-# DeepRacer Scripts
+# DeepRacer scripts
 
 Scripts to help set up and manage [AWS DeepRacer](https://docs.aws.amazon.com/deepracer/latest/developerguide/what-is-deepracer.html) users.
 
