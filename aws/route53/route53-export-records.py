@@ -43,13 +43,13 @@ def export_route53_records(hosted_zone_id):
 
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="A script to export all records from a Route53 Hosted Zone")
-parser.add_argument('-b', '--zone-id', type=str, required=True, help='ID of the hosted zone')
+parser.add_argument('-z', '--zone-id', type=str, required=True, help='ID of the hosted zone')
 
 # Parse the command line arguments
 args = parser.parse_args()
 
 # Call the function to export the records
-exported_records = export_route53_records(args.hosted_zone_id)
+exported_records = export_route53_records(args.zone_id)
 
 # Write output to file
 with open('records.txt', 'w') as f:

@@ -109,7 +109,7 @@ def create_users(user_prefix, group_name, num_users, filename):
 # The real stuff #
 ##################
 
-parser = argparse.ArgumentParser(description='A to create DeepRacer IAM and attach the permissions required to access the DeepRacer console')
+parser = argparse.ArgumentParser(description='A script to create DeepRacer IAM users and attach the permissions required to access the DeepRacer console')
 parser.add_argument('-u', '--user-prefix', type=str, required=False, help='The prefix to use for the user names (ex: deepracer)')
 parser.add_argument('-g', '--group-name', type=str, required=False, help='The name of the IAM group to create (ex: DeepRacerUsers)')
 parser.add_argument('-n', '--num-users', type=int, required=False, help='The number of users to create (ex: 10)')

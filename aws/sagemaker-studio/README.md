@@ -1,7 +1,4 @@
-# SageMaker Studio Scripts
+# SageMaker Studio scripts
 
-Scripts to setup and manage SageMaker studio environments (domains), users, and apps. 
+Scripts for working with SageMaker studio. The currently included scripts are:
 
-## `delete-all-kernel-gateways.py`
-
-This script asks for an AWS region name for input (such as `us-east-1`) and then deletes any and all KernelGateways found in that region. 

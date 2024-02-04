@@ -1,6 +1,6 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-24
+# Updated: 2024-02-04
 #
 # This script deletes all the (SageMaker created) EFS filesystems in a region. 
 # We need to do this because deleting a SageMaker domain does not automatically 
@@ -8,6 +8,11 @@
 #
 # NOTE: We try to be careful by only deleting filesystems tagged with 'ManagedByAmazonSageMakerResource'
 import boto3, time
+import argparse
+
+####################
+# Helper functions #
+####################
 
 def delete_mount_targets(efs_client, fs_id):
     mount_targets = efs_client.describe_mount_targets(FileSystemId=fs_id)['MountTargets']
@@ -55,5 +60,15 @@ def delete_efs_filesystems(region):
             except Exception as e:
                 print(f'Failed to delete EFS filesystem with ID: {fs_id}. Reason: {e}')
 
-region = input('Please input the AWS region (e.g. us-east-1): ')
-delete_efs_filesystems(region)
+##################
+# The real stuff #
+##################
+
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='Delete all Studio EFS file shares in a given region')
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region name (ex: us-east-1)')
+
+args = parser.parse_args()
+
+# Clean up those EFS filesystems!
+delete_efs_filesystems(args.region)

@@ -18,7 +18,7 @@ def get_instance_name(instance):
     tags_dict = {tag['Key']: tag['Value'] for tag in instance.tags}
     return tags_dict.get('Name', 'untagged')
 
-def take_snapshot_and_register_ami(region_name):
+def take_snapshot(region_name):
     # Create EC2 resource and client
     ec2_resource = boto3.resource('ec2', region_name=region_name)
     ec2_client = boto3.client('ec2', region_name=region_name)
@@ -43,9 +43,9 @@ def take_snapshot_and_register_ami(region_name):
 ##################
 
 # Use argparse to 
-parser = argparse.ArgumentParser(description="Take a snapshot of all disks attached to all stopped EC2 instances in the region and register the snapshot as an AMI if it's a system disk.")
+parser = argparse.ArgumentParser(description="Take a snapshot of all disks attached to all stopped EC2 instances in the region.")
 parser.add_argument('-r', '--region', type=str, required=True, help='AWS region (ex: us-east-1)')
 args = parser.parse_args()
 
-take_snapshot_and_register_ami(args.region)
+take_snapshot(args.region)
 print('Done!')

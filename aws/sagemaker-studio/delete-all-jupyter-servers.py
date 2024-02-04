@@ -4,6 +4,11 @@
 # Purpose: delete all JupyterServers in a given region (cleanup)
 #
 import boto3
+import argparse
+
+####################
+# Helper functions #
+####################
 
 def delete_all_kernelgateways(region_name):
     # Initialize SageMaker client for the specified region
@@ -44,6 +49,14 @@ def delete_all_kernelgateways(region_name):
                 except Exception as e:
                     print(f'Error deleting KernelGateway {app_name}: {e}')
 
-# Ask the user to input a region
-region = input('Enter an AWS region name (such as us-east-1): ').strip()
-delete_all_kernelgateways(region)
+##################
+# The real stuff #
+##################
+
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='Delete all Jupyter server instances (Apps) in a given region')
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region name (ex: us-east-1)')
+
+args = parser.parse_args()
+
+delete_all_kernelgateways(args.region)

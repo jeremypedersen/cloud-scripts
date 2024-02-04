@@ -1,6 +1,6 @@
 #
 # Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-10-08
+# Updated: 2024-02-04
 #
 # This script performs 'complete cleanup' of all SageMaker domains
 # in a given region. This includes:
@@ -15,10 +15,11 @@
 # are successfully deleted. 
 #
 import boto3
+import argparse
 
-#############
-# Functions #
-#############
+####################
+# Helper functions #
+####################
 
 def delete_all_apps(sagemaker):
 
@@ -121,9 +122,13 @@ def delete_all_domains(sagemaker):
 # The real stuff #
 ##################
 
-# Get user input for the region
-region_name = input('Please input the AWS region name (e.g., us-east-1): ')
-sagemaker_client = boto3.client('sagemaker', region_name=region_name)
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='Delete all SageMaker Domains in a given region')
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region name (ex: us-east-1)')
+
+args = parser.parse_args()
+
+sagemaker_client = boto3.client('sagemaker', region_name=args.region)
 
 # First, delete apps
 delete_all_apps(sagemaker_client)

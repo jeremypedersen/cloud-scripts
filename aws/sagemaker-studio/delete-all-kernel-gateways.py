@@ -1,9 +1,14 @@
 #
 # Author: Jeremy Pedersen (and ChatGPT)
-# Updated: 2023-08-24
+# Updated: 2024-02-04
 # Purpose: delete all KernelGateways in a given region (cleanup)
 #
 import boto3
+import argparse
+
+####################
+# Helper functions #
+####################
 
 def delete_all_kernelgateways(region_name):
     # Initialize SageMaker client for the specified region
@@ -44,6 +49,15 @@ def delete_all_kernelgateways(region_name):
                 except Exception as e:
                     print(f'Error deleting KernelGateway {app_name}: {e}')
 
+##################
+# The real stuff #
+##################
+
+# Use argparse to get the region name from the command line
+parser = argparse.ArgumentParser(description='Delete all Kernel Gateways (Apps) in a given region')
+parser.add_argument('-r', '--region', type=str, required=True, help='AWS region name (ex: us-east-1)')
+
+args = parser.parse_args()
+
 # Ask the user to input a region
-region = input('Enter an AWS region name (such as us-east-1): ').strip()
-delete_all_kernelgateways(region)
+delete_all_kernelgateways(args.region)

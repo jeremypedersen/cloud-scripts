@@ -103,7 +103,7 @@ def delete_users(user_prefix, group_name):
 # The real stuff #
 ##################
 
-parser = argparse.ArgumentParser(description='A to delete the DeepRacer users (and the group) created by dr-create-users.py')
+parser = argparse.ArgumentParser(description='A script to delete the DeepRacer users (and the group) created by dr-create-users.py')
 parser.add_argument('-u', '--user-prefix', type=str, required=False, help='The prefix to use for the user names (ex: deepracer-)')
 parser.add_argument('-g', '--group-name', type=str, required=False, help='The name of the IAM group to create (ex: DeepRacerUsers)')
 
